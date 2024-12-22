@@ -69,4 +69,4 @@ jobs:
         with:
           packages-dir: dist/
           user: __token__
-          password: ${{ secrets.Salfetka }}
+          password: ${{ secrets.AB_LIBRARY_GITHUB_RENAT }}
