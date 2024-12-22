@@ -138,7 +138,7 @@ data = {
 df = pd.DataFrame(data)
 
 results = ttest(df, metric_col='metric', ab_group_col='group')
-print(results)
+results
 ```
 ### Perform Proportion Tests Between Groups
 
@@ -155,7 +155,7 @@ data = {
 df = pd.DataFrame(data)
 
 results = ztest_proportion(df, metric_col='success', ab_group_col='group')
-print(results)
+results
 ```
 ### Perform T-Tests on Delta Between Ratios
 
@@ -178,7 +178,7 @@ results = ttest_delta(
     metric_denom_col='denominator', 
     ab_group_col='group'
 )
-print(results)
+results
 ```
 ### Plot P-value Distribution from A/A Tests
 
@@ -245,7 +245,7 @@ df = pd.DataFrame(data)
 
 # Perform t-test
 results = ttest(df, metric_col='metric', ab_group_col='group')
-print(results)
+results
 
 # Plot p-value over time
 dates = ['2024-01', '2024-02', '2024-03', '2024-04']
