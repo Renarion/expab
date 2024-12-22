@@ -82,6 +82,28 @@ pip install -e .
 ```
 ## Usage
 
+### Generated data for testing library
+```python
+# Data for using mde
+
+sample_size = 10000
+dataset = [random.randrange(1000, sample_size) for i in range(sample_size)]
+dataset_binary = [random.randrange(0, 2) for i in range(sample_size)]
+mean = np.mean(dataset)
+std = np.std(dataset)
+
+# Dataframe for applying tests
+
+sample_size = 10000
+
+df = pd.DataFrame()
+df['user_id'] = pd.Series([i for i in range(sample_size)])
+df['has_treatment'] = pd.Series(np.random.randint(0, 2, sample_size))
+df['value'] = pd.Series([random.randrange(1000, sample_size) for i in range(sample_size)])
+df['order_number'] = pd.Series([random.randrange(0, 10) for i in range(sample_size)])
+df['binary'] = pd.Series([random.randrange(0, 2) for i in range(sample_size)])
+```
+
 ### Calculate Minimum Detectable Effect (MDE)
 
 Calculate the Minimum Detectable Effect (MDE) given the mean, standard deviation, and sample size.
