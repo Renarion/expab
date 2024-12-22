@@ -20,27 +20,26 @@ def get_mde(
     alpha_correction: bool = False,
     alpha: float = 0.05,
     beta: float = 0.2
-) -> Tuple[float, float]:
+) -> pd.DataFrame(): # type: ignore
     
     """
-    Purpose: Calculate the Minimum Detectable Effect (MDE) for a given set of parameters such as mean, standard deviation, and sample size. MDE represents the smallest effect size that can be detected given statistical constraints.
+    Calculate the Minimum Detectable Effect (MDE) for a given set of parameters such as mean, standard deviation, and sample size. MDE represents the smallest effect size that can be detected given statistical constraints.
 
-    Parameters:
+    Args:
+        mean (float): The mean value of the metric.
+        std (float): The standard deviation of the metric.
+        sample_size (list): A list of sample sizes for which MDE will be calculated.
+        n_groups (int, default=2): The number of experimental groups.
+        n_metrics (int, default=1): The number of metrics in the analysis.
+        compare (str, default='only_control'): Defines comparison type. Options: 'only_control' or 'together'.
+        alpha_correction (bool, default=False): If True, applies alpha correction for multiple comparisons.
+        alpha (float, default=0.05): The significance level for the test.
+        beta (float, default=0.2): The probability of a Type II error (1 - power).
 
-    mean (float): The mean value of the metric.
-    std (float): The standard deviation of the metric.
-    sample_size (list): A list of sample sizes for which MDE will be calculated.
-    n_groups (int, default=2): The number of experimental groups.
-    n_metrics (int, default=1): The number of metrics in the analysis.
-    compare (str, default='only_control'): Defines comparison type. Options: 'only_control' or 'together'.
-    alpha_correction (bool, default=False): If True, applies alpha correction for multiple comparisons.
-    alpha (float, default=0.05): The significance level for the test.
-    beta (float, default=0.2): The probability of a Type II error (1 - power).
     Returns:
-
-    A DataFrame containing MDE values (absolute and percentage) for each sample size.
+        A DataFrame containing MDE values (absolute and percentage) for each sample size.
     """
-    
+
     if alpha_correction and compare == 'together':
         alpha_correction = math.factorial(n_groups) / (math.factorial(n_groups - 2) * 2)
         t_alpha = norm.ppf(1 - (alpha / 2) / (alpha_correction * n_metrics))
@@ -86,22 +85,21 @@ def get_mde_ratio(
 ) -> Tuple[float, float]:
     
     """
-    Purpose: Calculate the Minimum Detectable Effect (MDE) for ratios, using numerator and denominator arrays to compute variance.
+    Calculate the Minimum Detectable Effect (MDE) for ratios, using numerator and denominator arrays to compute variance.
 
-    Parameters:
+    Args:
+        num (np.ndarray): The numerator values.
+        denom (np.ndarray): The denominator values.
+        sample_size (int): The sample size for the calculation.
+        n_groups (int, default=2): Number of experimental groups.
+        n_metrics (int, default=1): Number of metrics.
+        compare (str, default='only_control'): Defines comparison type.
+        alpha_correction (bool, default=False): If True, applies alpha correction for multiple comparisons.
+        alpha (float, default=0.05): Significance level.
+        beta (float, default=0.2): Probability of Type II error.
 
-    num (np.ndarray): The numerator values.
-    denom (np.ndarray): The denominator values.
-    sample_size (int): The sample size for the calculation.
-    n_groups (int, default=2): Number of experimental groups.
-    n_metrics (int, default=1): Number of metrics.
-    compare (str, default='only_control'): Defines comparison type.
-    alpha_correction (bool, default=False): If True, applies alpha correction for multiple comparisons.
-    alpha (float, default=0.05): Significance level.
-    beta (float, default=0.2): Probability of Type II error.
     Returns:
-
-    A tuple containing the MDE in percentage and absolute values.
+        A tuple containing the MDE in percentage and absolute values.
     """
 
     if alpha_correction and compare == 'together':
@@ -137,17 +135,16 @@ def plot_p_value_over_time(
 ) -> None:
     
     """
-    Purpose: Plot the dynamics of p-values over time during an experiment. Highlights areas where the p-value is below the significance threshold.
+    Plot the dynamics of p-values over time during an experiment. Highlights areas where the p-value is below the significance threshold.
 
-    Parameters:
-
-    dates (List[Union[str, float]]): Dates or time periods corresponding to the data.
-    test_group (List[List[float]]): Test group data for each time point.
-    control_group (List[List[float]]): Control group data for each time point.
-    significance_level (float, default=0.05): The threshold for statistical significance.
+    Args:
+        dates (List[Union[str, float]]): Dates or time periods corresponding to the data.
+        test_group (List[List[float]]): Test group data for each time point.
+        control_group (List[List[float]]): Control group data for each time point.
+        significance_level (float, default=0.05): The threshold for statistical significance.
+    
     Returns:
-
-    None. Displays a line plot showing p-value dynamics.
+        None. Displays a line plot showing p-value dynamics.
     """
 
     if len(dates) != len(test_group) or len(dates) != len(control_group):
@@ -185,19 +182,18 @@ def ttest(
 ) -> pd.DataFrame:
     
     """
-    Purpose: Perform two-sample t-tests between specified groups and compute confidence intervals for the differences.
+    Perform two-sample t-tests between specified groups and compute confidence intervals for the differences.
 
-    Parameters:
-
-    df (pd.DataFrame): The dataset containing the metric and group columns.
-    metric_col (str): The column name for the metric being analyzed.
-    ab_group_col (str): The column identifying groups (e.g., A/B).
-    pairs_list (List[Tuple[str, str]], default=[(0, 1)]): Pairs of groups to compare.
-    corrected_ci (float, default=0.95): Confidence level for the intervals.
-    flag_notation (bool, default=False): If True, prints detailed results.
+    Args:
+        df (pd.DataFrame): The dataset containing the metric and group columns.
+        metric_col (str): The column name for the metric being analyzed.
+        ab_group_col (str): The column identifying groups (e.g., A/B).
+        pairs_list (List[Tuple[str, str]], default=[(0, 1)]): Pairs of groups to compare.
+        corrected_ci (float, default=0.95): Confidence level for the intervals.
+        flag_notation (bool, default=False): If True, prints detailed results.
+    
     Returns:
-
-    A DataFrame containing t-statistics, p-values, means, and confidence intervals for each group comparison.
+        A DataFrame containing t-statistics, p-values, means, and confidence intervals for each group comparison.
     """
 
     res_table = pd.DataFrame()
@@ -269,19 +265,18 @@ def ztest_proportion(
 ) -> pd.DataFrame:
     
     """
-    Purpose: Perform z-tests to compare proportions between two groups.
+    Perform z-tests to compare proportions between two groups.
 
-    Parameters:
-
-    df (pd.DataFrame): The dataset containing the metric and group columns.
-    metric_col (str): The column representing binary outcomes (e.g., success/failure).
-    ab_group_col (str): The column identifying groups.
-    pairs_list (List[Tuple[str, str]], default=[(0, 1)]): Pairs of groups to compare.
-    corrected_ci (float, default=0.95): Confidence level.
-    flag_notation (bool, default=False): If True, prints detailed results.
+    Args:
+        df (pd.DataFrame): The dataset containing the metric and group columns.
+        metric_col (str): The column representing binary outcomes (e.g., success/failure).
+        ab_group_col (str): The column identifying groups.
+        pairs_list (List[Tuple[str, str]], default=[(0, 1)]): Pairs of groups to compare.
+        corrected_ci (float, default=0.95): Confidence level.
+        flag_notation (bool, default=False): If True, prints detailed results.
+    
     Returns:
-
-    A DataFrame containing z-statistics, p-values, proportions, and confidence intervals for each comparison.
+        A DataFrame containing z-statistics, p-values, proportions, and confidence intervals for each comparison.
     """
 
     res_table = pd.DataFrame()
@@ -356,20 +351,19 @@ def ttest_delta(
     ) -> pd.DataFrame:
 
     """
-    Purpose: Perform t-tests to compare deltas (differences) between two ratios for specified groups.
+    Perform t-tests to compare deltas (differences) between two ratios for specified groups.
 
-    Parameters:
-
-    df (pd.DataFrame): The dataset containing the numerator, denominator, and group columns.
-    metric_num_col (str): Column for the numerator metric.
-    metric_denom_col (str): Column for the denominator metric.
-    ab_group_col (str): Column identifying groups.
-    pairs_list (List[Tuple[str, str]], default=[(0, 1)]): Pairs of groups to compare.
-    corrected_ci (float, default=0.95): Confidence level.
-    flag_notation (bool, default=False): If True, prints detailed results.
+    Args:
+        df (pd.DataFrame): The dataset containing the numerator, denominator, and group columns.
+        metric_num_col (str): Column for the numerator metric.
+        metric_denom_col (str): Column for the denominator metric.
+        ab_group_col (str): Column identifying groups.
+        pairs_list (List[Tuple[str, str]], default=[(0, 1)]): Pairs of groups to compare.
+        corrected_ci (float, default=0.95): Confidence level.
+        flag_notation (bool, default=False): If True, prints detailed results.
+    
     Returns:
-
-    A DataFrame containing t-statistics, p-values, ratios, deltas, and confidence intervals.
+        A DataFrame containing t-statistics, p-values, ratios, deltas, and confidence intervals.
     """
 
     def get_ratio_var(
@@ -433,16 +427,15 @@ def plot_p_value_distribution(
 ) -> None:
     
     """
-    Purpose: Plot the distribution of p-values generated from A/A tests, highlighting the frequency of false positives.
+    Plot the distribution of p-values generated from A/A tests, highlighting the frequency of false positives.
 
-    Parameters:
-
-    control_group (np.ndarray): Data for the control group.
-    test_group (np.ndarray): Data for the test group.
-    num_tests (int, default=1000): Number of A/A tests to perform.
+    Args:
+        control_group (np.ndarray): Data for the control group.
+        test_group (np.ndarray): Data for the test group.
+        num_tests (int, default=1000): Number of A/A tests to perform.
+    
     Returns:
-
-    None. Displays a histogram of p-values.
+        None. Displays a histogram of p-values.
     """
 
     np.random.seed(42)
@@ -467,16 +460,15 @@ def plot_p_value_distribution(
 def plot_pvalue_ecdf(control_group, test_group, title=None):
 
     """
-    Purpose: Plot the histogram and empirical cumulative distribution function (ECDF) of p-values.
+    Plot the histogram and empirical cumulative distribution function (ECDF) of p-values.
 
-    Parameters:
-
-    control_group (pd.DataFrame): Data for the control group.
-    test_group (pd.DataFrame): Data for the test group.
-    title (str, optional): Title for the plot.
+    Args:
+        control_group (pd.DataFrame): Data for the control group.
+        test_group (pd.DataFrame): Data for the test group.
+        title (str, optional): Title for the plot.
+    
     Returns:
-
-    None. Displays a histogram and ECDF plot for p-values.
+        None. Displays a histogram and ECDF plot for p-values.
     """
 
     pvalues = [
@@ -504,17 +496,16 @@ def method_benjamini_hochberg(
 ) -> np.ndarray:
     
     """
-    Purpose: Implements the Benjamini-Hochberg procedure to control the False Discovery Rate (FDR) in multiple hypothesis testing. This method determines which null hypotheses to reject based on a set of p-values and a specified significance level (alpha).
+    Implements the Benjamini-Hochberg procedure to control the False Discovery Rate (FDR) in multiple hypothesis testing. This method determines which null hypotheses to reject based on a set of p-values and a specified significance level (alpha).
 
-    Parameters:
-
-    pvalues (np.ndarray): An array of p-values from multiple hypothesis tests.
-    alpha (float, default=0.05): The desired False Discovery Rate (FDR) threshold.
+    Args:
+        pvalues (np.ndarray): An array of p-values from multiple hypothesis tests.
+        alpha (float, default=0.05): The desired False Discovery Rate (FDR) threshold.
+    
     Returns:
-
-    np.ndarray: A binary array of the same length as pvalues, where:
-        1 indicates that the corresponding null hypothesis is rejected (statistically significant).
-        0 indicates that the null hypothesis is not rejected.
+        np.ndarray: A binary array of the same length as pvalues, where:
+            1 indicates that the corresponding null hypothesis is rejected (statistically significant).
+            0 indicates that the null hypothesis is not rejected.
     """
 
     m = len(pvalues)
