@@ -2,7 +2,7 @@ from setuptools import setup, find_packages
 
 setup(
     name="expab",
-    version="0.0.4",
+    version="0.0.5",
     url='https://github.com/Renarion/expab',
     packages=find_packages(),
     long_description=open('README.md').read(),
