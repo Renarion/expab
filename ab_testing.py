@@ -230,23 +230,22 @@ def ttest(
             print(f'Confidence interval for delta, %: ({lb_per}, {ub_per})')
 
         result = pd.DataFrame(
-            np.array([metric_col, n0, n1, pair[0], pair[1], value[0], value[2], value[1], m0, m1, delta, delta_per, lb, ub, lb_per, ub_per]).reshape(1, -1),
+            np.array([metric_col, n0, n1, pair[0], pair[1], value[0], value[2], value[1], m0, m1, delta, delta_per, lower_boundary, upper_boundary, lower_boundary_%, upper_boundary_%]).reshape(1, -1),
             columns=['metric_name', 
                      'group0_sample_size', 
                      'group1_sample_size',
                      'group0', 
                      'group1', 
-                     't_statistic', 
-                     'df', 
+                     'statistic', 
                      'pvalue', 
                      'mean0', 
                      'mean1', 
                      'diff_mean', 
                      'diff_mean_%', 
-                     'lower_boundary', 
-                     'upper_boundary', 
-                     'lower_boundary_%', 
-                     'upper_boundary_%']
+                     'lb', 
+                     'ub', 
+                     'lb_%', 
+                     'ub_%']
         )
         res_table = pd.concat([res_table, result])
     
@@ -327,11 +326,11 @@ def ztest_proportion(
                      'mean0', 
                      'mean1', 
                      'diff_mean', 
-                     'diff_mean, %', 
-                     'lower_boundary', 
-                     'upper_boundary', 
-                     'lower_boundary_%', 
-                     'upper_boundary_%',]
+                     'diff_mean_%', 
+                     'lb', 
+                     'ub', 
+                     'lb_%', 
+                     'ub_%',]
         )
         res_table = pd.concat([res_table, result])
 
@@ -411,7 +410,7 @@ def ttest_delta(
 
         result = pd.DataFrame(
             np.array([metric_name, group0_sample_size, group1_sample_size, pair[0], pair[1], statistic, pvalue, ratio0, ratio1, delta, delta_per, lb, ub, lb_per, ub_per]).reshape(1, -1),
-            columns=['metric_name', 'group0_sample_size', 'group1_sample_size', 'group0', 'group1', 't_statistic', 'pvalue', 'mean0', 'mean1', 'diff_mean', 'diff_mean, %', 'lb', 'ub', 'lb%', 'ub%']
+            columns=['metric_name', 'group0_sample_size', 'group1_sample_size', 'group0', 'group1', 'statistic', 'pvalue', 'mean0', 'mean1', 'diff_mean', 'diff_mean_%', 'lb', 'ub', 'lb_%', 'ub_%']
         )
         res_table = pd.concat([res_table, result])
 
