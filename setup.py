@@ -1,7 +1,7 @@
 from setuptools import setup, find_packages
 
 setup(
-    name="AB_library",
+    name="expab",
     version="0.0.1",
     url='https://github.com/Renarion/AB_library',
     packages=find_packages(),
