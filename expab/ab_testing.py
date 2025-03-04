@@ -230,7 +230,7 @@ def ttest(
             print(f'Confidence interval for delta, %: ({lb_per}, {ub_per})')
 
         result = pd.DataFrame(
-            np.array([metric_col, n0, n1, pair[0], pair[1], value[0], value[2], value[1], m0, m1, delta, delta_per, lb, ub, lb_per, ub_per]).reshape(1, -1),
+            np.array([metric_col, n0, n1, pair[0], pair[1], value[0], value[1], m0, m1, delta, delta_per, lb, ub, lb_per, ub_per]).reshape(1, -1),
             columns=['metric_name', 
                      'group0_sample_size', 
                      'group1_sample_size',
