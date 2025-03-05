@@ -73,16 +73,26 @@ You can install the library using pip:
 
 ```bash
 pip install expab
-#or pip uninstall expab with terminal to reinstall
 ```
+
+Or, if you have the source code cloned locally, install it in editable mode:
+
+```bash
+pip install -e .
+```
+
+Deleting the package with terminal to re-install
+
+```bash
+pip uninstall expab
+```
+
+When new version is released, it needs to be updated with the following command
+
 ```bash
 pip install expab --upgrade
 ```
 
-Or, if you have the source code cloned locally, install it in editable mode:
-```bash
-pip install -e .
-```
 ## Usage
 
 ### Generated data for testing library
