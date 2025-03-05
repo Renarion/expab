@@ -27,7 +27,6 @@ A comprehensive Python library designed for A/B testing analysis, providing esse
 - P-value Visualization: Visualize p-value dynamics over time and their distributions.
 - Multiple Hypothesis Correction: Apply the Benjamini-Hochberg procedure to control the false discovery rate.
 
-
 ## Essential Mathematical Formulas
 
 #### <br> Sample Size </br>
@@ -73,7 +72,11 @@ $$
 You can install the library using pip:
 
 ```bash
-pip install AB_library
+pip install expab
+#or pip uninstall expab with terminal to reinstall
+```
+```bash
+pip install expab --upgrade
 ```
 
 Or, if you have the source code cloned locally, install it in editable mode:
@@ -108,7 +111,7 @@ df['binary'] = pd.Series([random.randrange(0, 2) for i in range(sample_size)])
 
 Calculate the Minimum Detectable Effect (MDE) given the mean, standard deviation, and sample size.
 ```python
-from AB_library import get_mde
+from expab import get_mde
 
 mean = 100
 std = 15
@@ -121,7 +124,7 @@ print(f"MDE: {mde_percentage}% ({mde_absolute})")
 
 Calculate MDE when your metric is a ratio (e.g., conversion rate).
 ```python
-from AB_library import get_mde_ratio
+from expab import get_mde_ratio
 import numpy as np
 
 numerator = np.array([50, 55, 60, 65, 70])
@@ -136,7 +139,7 @@ print(f"MDE Ratio: {mde_ratio_percentage}% ({mde_ratio_absolute})")
 Visualize how p-values change over different time periods during your experiment.
 
 ```python
-from AB_library import plot_p_value_over_time
+from expab import plot_p_value_over_time
 
 dates = ['2024-01', '2024-02', '2024-03', '2024-04']
 test_group = [[1.2, 1.3, 1.1], [1.4, 1.5, 1.3], [1.5, 1.6, 1.4], [1.7, 1.8, 1.6]]
@@ -149,8 +152,9 @@ plot_p_value_over_time(dates, test_group, control_group)
 
 Conduct t-tests between two groups and obtain statistical metrics.
 ```python
-from AB_library import ttest
+from expab import ttest
 import pandas as pd
+import numpy as np
 
 # Sample DataFrame
 data = {
@@ -166,8 +170,9 @@ results
 
 Perform proportion tests to compare binary outcomes between groups.
 ```python
-from AB_library import ztest_proportion
+from expab import ztest_proportion
 import pandas as pd
+import numpy as np
 
 # Sample DataFrame
 data = {
@@ -183,8 +188,9 @@ results
 
 Compare the delta between two ratio metrics across groups.
 ```python
-from AB_library import ttest_delta
+from expab import ttest_delta
 import pandas as pd
+import numpy as np
 
 # Sample DataFrame
 data = {
@@ -206,8 +212,9 @@ results
 
 Visualize the distribution of p-values from A/A testing to assess test calibration.
 ```python
-from AB_library import plot_p_value_distribution
+from expab import plot_p_value_distribution
 import numpy as np
+import pandas as pd
 
 control_group = np.random.normal(100, 15, 1000)
 test_group = np.random.normal(100, 15, 1000)
@@ -218,7 +225,7 @@ plot_p_value_distribution(control_group, test_group)
 
 Create Empirical Cumulative Distribution Function (ECDF) plots for p-values.
 ```python
-from AB_library import plot_pvalue_ecdf
+from expab import plot_pvalue_ecdf
 import pandas as pd
 import numpy as np
 
@@ -236,8 +243,9 @@ plot_pvalue_ecdf(control_group, test_group, title='P-value ECDF')
 
 Control the false discovery rate when performing multiple hypothesis tests.
 ```python
-from AB_library import method_benjamini_hochberg
+from expab import method_benjamini_hochberg
 import numpy as np
+import pandas as pd
 
 pvalues = np.random.uniform(0, 1, 100)
 adjusted = method_benjamini_hochberg(pvalues, alpha=0.05)
@@ -249,7 +257,7 @@ Here’s a complete example that ties together multiple functions from the libra
 ```python
 import numpy as np
 import pandas as pd
-from AB_library import get_mde, ttest, plot_p_value_over_time
+from expab import get_mde, ttest, plot_p_value_over_time
 
 # Calculate MDE
 mean = 100
