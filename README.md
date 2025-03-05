@@ -261,7 +261,7 @@ pvalues = np.random.uniform(0, 1, 100)
 adjusted = method_benjamini_hochberg(pvalues, alpha=0.05)
 print(adjusted)
 ```
-### Example
+### Example of the entire experiment's calculation
 
 Here’s a complete example that ties together multiple functions from the library:
 ```python
