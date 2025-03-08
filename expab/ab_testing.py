@@ -21,7 +21,7 @@ def get_mde(
     alpha: float = 0.05,
     beta: float = 0.2
 ) -> pd.DataFrame(): # type: ignore
-    
+
     """
     Calculate the Minimum Detectable Effect (MDE) for a given set of parameters such as mean, standard deviation, and sample size. MDE represents the smallest effect size that can be detected given statistical constraints.
 
@@ -39,7 +39,7 @@ def get_mde(
     Returns:
         A DataFrame containing MDE values (absolute and percentage) for each sample size.
     """
-
+        
     if alpha_correction and compare == 'together':
         alpha_correction = math.factorial(n_groups) / (math.factorial(n_groups - 2) * 2)
         t_alpha = norm.ppf(1 - (alpha / 2) / (alpha_correction * n_metrics))
@@ -55,9 +55,11 @@ def get_mde(
     data = []
 
     for size in sample_size:
-        mde_formula = (t_alpha + t_beta) * np.sqrt((variance*4) / (size)) # ((variance*2) / (size / 2)) in case of sample sizes divided by 2
+        mde_formula = (t_alpha + t_beta) * np.sqrt((variance*4) / (size))
         data.append({
         'sample_size': size,
+        'mean': mean,
+        'std': std,
         'mde_abs': mde_formula,
         'mde_%': (mde_formula * 100 / mean),
         'alpha': alpha,
@@ -75,7 +77,7 @@ def get_mde(
 def get_mde_ratio(
     num: np.ndarray,
     denom: np.ndarray,
-    sample_size: int,
+    sample_size: list = [1000],
     n_groups: int = 2,
     n_metrics: int = 1,
     compare: str = 'only_control',
@@ -83,7 +85,7 @@ def get_mde_ratio(
     alpha: float = 0.05,
     beta: float = 0.2
 ) -> Tuple[float, float]:
-    
+
     """
     Calculate the Minimum Detectable Effect (MDE) for ratios, using numerator and denominator arrays to compute variance.
 
@@ -101,7 +103,7 @@ def get_mde_ratio(
     Returns:
         A tuple containing the MDE in percentage and absolute values.
     """
-
+    
     if alpha_correction and compare == 'together':
         alpha_correction = math.factorial(n_groups) / (math.factorial(n_groups - 2) * 2)
         t_alpha = norm.ppf(1 - (alpha / 2) / (alpha_correction * n_metrics))
@@ -124,8 +126,28 @@ def get_mde_ratio(
     )
     variance = var_metric
     t_beta = norm.ppf(1 - beta)
-    mde = (t_alpha + t_beta) * np.sqrt((variance*4) / (sample_size))
-    return mde * 100 / mean, mde
+    
+    data = []
+
+    for size in sample_size:
+        mde_formula = (t_alpha + t_beta) * np.sqrt((variance*4) / (size))
+        data.append({
+        'sample_size': size,
+        'mean': mean,
+        'var': var_metric,
+        'mde_abs': mde_formula,
+        'mde_%': (mde_formula * 100 / mean),
+        'alpha': alpha,
+        'beta': beta
+    })
+        
+    mde = pd.DataFrame(data)
+    mde['sample_size'] = mde['sample_size'].astype('int64')
+
+    for column in mde.columns[1:]:
+        mde[column] = mde[column].astype('float')
+        
+    return mde
 
 def plot_p_value_over_time(
     dates: List[Union[str, float]],
