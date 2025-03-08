@@ -97,6 +97,7 @@ pip install expab --upgrade
 
 ### Generated data for testing library
 ```python
+import random
 # Data for using mde
 
 sample_size = 10000
