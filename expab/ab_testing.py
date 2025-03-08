@@ -13,7 +13,7 @@ from tqdm import tqdm
 def get_mde(
     mean: float,
     std: float,
-    sample_size: list,
+    sample_size: list = [1000],
     n_groups: int = 2,
     n_metrics: int = 1,
     compare: str = 'only_control',
@@ -55,7 +55,7 @@ def get_mde(
     data = []
 
     for size in sample_size:
-        mde_formula = (t_alpha + t_beta) * np.sqrt((variance*4) / (size))
+        mde_formula = (t_alpha + t_beta) * np.sqrt((variance*4) / (size)) # ((variance*2) / (size / 2)) in case of sample sizes divided by 2
         data.append({
         'sample_size': size,
         'mde_abs': mde_formula,
