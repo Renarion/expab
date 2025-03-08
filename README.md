@@ -265,39 +265,6 @@ pvalues = np.random.uniform(0, 1, 100)
 adjusted = method_benjamini_hochberg(pvalues, alpha=0.05)
 print(adjusted)
 ```
-### Example of the entire experiment's calculation
-
-Here’s a complete example that ties together multiple functions from the library:
-```python
-import numpy as np
-import pandas as pd
-from expab import get_mde, ttest, plot_p_value_over_time
-
-# Calculate MDE
-mean = 100
-std = 15
-sample_size = 1000
-mde_percentage, mde_absolute = get_mde(mean, std, sample_size)
-print(f"MDE: {mde_percentage}% ({mde_absolute})")
-
-# Create sample data
-data = {
-    'group': [0]*1000 + [1]*1000,
-    'metric': np.random.normal(100, 15, 2000)
-}
-df = pd.DataFrame(data)
-
-# Perform t-test
-results = ttest(df, metric_col='metric', ab_group_col='group')
-results
-
-# Plot p-value over time
-dates = ['2024-01', '2024-02', '2024-03', '2024-04']
-test_group = [np.random.normal(100, 15, 100) for _ in dates]
-control_group = [np.random.normal(100, 15, 100) for _ in dates]
-plot_p_value_over_time(dates, test_group, control_group)
-```
-
 
 # License
 
