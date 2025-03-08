@@ -119,11 +119,11 @@ def get_mde_ratio(
     std_denom = np.std(denom)
     cov_nom_denom = np.cov(num, denom)[0, 1]
     mean = np.sum(num) / np.sum(denom)
-    var_metric = (
+    var_metric = abs((
         (std_nom**2) / (mean_denom**2) +
         (mean_nom**2) / (mean_denom**4) * (std_denom**2) -
         2 * mean_nom / (mean_denom**3) * cov_nom_denom
-    )
+    ))
     variance = var_metric
     t_beta = norm.ppf(1 - beta)
     
