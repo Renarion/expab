@@ -131,7 +131,7 @@ mean = 100
 std = 15
 sample_size = 1000
 
-mde_percentage, mde_absolute = get_mde(mean, std, sample_size)
+mde_percentage, mde_absolute = get_mde(mean, std, [sample_size])
 print(f"MDE: {mde_percentage}% ({mde_absolute})")
 ```
 ### Calculate MDE for Ratios
@@ -141,11 +141,11 @@ Calculate MDE when your metric is a ratio (e.g., conversion rate).
 from expab import get_mde_ratio
 import numpy as np
 
-numerator = np.array([50, 55, 60, 65, 70])
+numerator = np.array([50050, 55051, 60502, 65506, 70304])
 denominator = np.array([500, 550, 600, 650, 700])
 sample_size = 1000
 
-mde_ratio_percentage, mde_ratio_absolute = get_mde_ratio(numerator, denominator, sample_size)
+mde_ratio_percentage, mde_ratio_absolute = get_mde_ratio(numerator, denominator, [sample_size])
 print(f"MDE Ratio: {mde_ratio_percentage}% ({mde_ratio_absolute})")
 ```
 ### Plot P-value Over Time
